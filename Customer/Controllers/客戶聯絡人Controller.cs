@@ -50,7 +50,8 @@ namespace Customer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
         {
-            if (ModelState.IsValid)
+            //Cindy: 如何在前端就跳出訊息: "有重複之信箱"，只能用Jquery嗎?
+            if (ModelState.IsValid && !客戶聯絡人MetaData.HasRepeatEmail(客戶聯絡人.Email, 客戶聯絡人.客戶Id))
             {
                 db.客戶聯絡人.Add(客戶聯絡人);
                 db.SaveChanges();
