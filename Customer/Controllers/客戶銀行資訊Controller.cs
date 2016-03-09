@@ -17,7 +17,7 @@ namespace Customer.Controllers
         // GET: 客戶銀行資訊
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
+            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料).Where(b => b.是否已刪除 == false);
             return View(客戶銀行資訊.ToList());
         }
 
@@ -115,7 +115,8 @@ namespace Customer.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
+            //db.客戶銀行資訊.Remove(客戶銀行資訊);
+            客戶銀行資訊.是否已刪除 = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
