@@ -20,6 +20,23 @@ namespace Customer.Controllers
             return View(db.客戶資料.ToList().Where(c => c.是否已刪除 == false));
         }
 
+        //[HttpPost]
+        public ActionResult 依客戶名稱搜尋(string 關鍵字)
+        {
+            if (!string.IsNullOrEmpty(關鍵字.Trim()))
+            {
+                var data = db.客戶資料.Where(c => c.客戶名稱.Contains(關鍵字) && c.是否已刪除 == false);
+                //return View("Index", result);
+                return View("Index", data.ToList());
+            }
+            else
+            {
+                return View("Index", new List<客戶資料>());
+            }
+
+            
+        }
+
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)
         {
