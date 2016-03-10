@@ -37,6 +37,7 @@ namespace Customer.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        [手機格式驗證]
         [StringLength(50, ErrorMessage = "欄位長度不得大於 50 個字元")]
         public string 手機 { get; set; }
 
