@@ -27,6 +27,7 @@ namespace Customer.Controllers
             {
                 var data = db.客戶資料.Where(c => c.客戶名稱.Contains(關鍵字) && c.是否已刪除 == false);
                 //return View("Index", result);
+                //Cindy: 這邊要注意要寫清楚丟到哪個View，例如"Index"，否則會跳出錯誤，導到錯誤的網址，也就是找不到網址
                 return View("Index", data.ToList());
             }
             else
