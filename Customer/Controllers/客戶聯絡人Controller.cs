@@ -16,10 +16,12 @@ namespace Customer.Controllers
         
 
         // GET: 客戶聯絡人
-        public ActionResult Index()
-        {            
-            var 客戶聯絡人 = ContactRepo.All().Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.ToList());
+        public ActionResult Index(string 職稱清單)
+        {
+            //ViewBag.職稱清單 = ContactRepo.取得職稱清單();
+            ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
+
+            return View(ContactRepo.All(職稱清單).Include(客 => 客.客戶資料));
         }
 
         // GET: 客戶聯絡人/Details/5
