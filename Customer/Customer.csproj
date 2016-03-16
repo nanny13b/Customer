@@ -52,6 +52,9 @@
       <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EncyptDesDll">
+      <HintPath>..\..\..\..\RefCode\Massage\Source\Massage\Massage\bin\EncyptDesDll.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -302,6 +305,7 @@
     <Compile Include="Models\VW客戶檢視表Repository.cs">
       <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶分類.cs" />
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>Customer.tt</DependentUpon>
     </Compile>

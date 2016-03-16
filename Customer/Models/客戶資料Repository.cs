@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Customer.Models
 {
@@ -9,6 +10,20 @@ namespace Customer.Models
         public override IQueryable<客戶資料> All()
         {
             return base.All().Where(c => c.是否已刪除 == false);
+        }
+
+        public IQueryable<客戶資料> All(string keyword, string CustType)
+        {
+            var data = this.All();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                data = data.Where(c => c.客戶名稱.Contains(keyword));
+            }
+            if (!string.IsNullOrEmpty(CustType) && CustType != "0")
+            {
+                data = data.Where(c => c.客戶分類 == CustType);
+            }
+            return data;
         }
 
         public IQueryable<客戶資料> All(bool isAll)

@@ -4,20 +4,31 @@
     ViewBag.Title = "客戶資料列表";
 }
 
-<h2>Index</h2>
-<table style="border : 0; width:80%;">
-    <tr>
-        <td>@Html.ActionLink("Create New", "Create")</td>
-        <td align="right">
-            @using (Html.BeginForm("依客戶名稱搜尋", "客戶資料"))
-            {
-                @Html.TextBox("關鍵字", null, new { @class = "btn-info" })
-                <input type="submit" name="尋找" value="尋找 " class="btn btn-default" />
-            }
-        </td>
-    </tr>
-</table>
+<h2>列表頁</h2>
 
+@*@using (Html.BeginForm("Index", "客戶資料", FormMethod.Get))
+    {
+        <input type="search" name="keyword" placeholder="請輸入關鍵字" value="" />
+    }
+*@
+
+@using (Html.BeginForm("Index", "客戶資料", FormMethod.Get))
+{
+    <table style="border : 0; width:80%;" cellpadding="5">
+        <tr>
+            <td>@Html.ActionLink("新增顧客資料", "Create")</td>
+            <td align="center" valign="middle">
+                關鍵字：@Html.TextBox("關鍵字", null, new { @class = "form-control" })
+            </td>
+            <td valign="middle" align="center">
+                客戶類別：@Html.DropDownList("客戶類別", null, htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td  valign="middle" align="center">
+                <button type="submit">搜尋</button>
+            </td>
+        </tr>
+    </table>
+}
 
 
 <table class="table">

@@ -4,8 +4,12 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
+<h2>編輯客戶資訊</h2>
+@if (!string.IsNullOrEmpty(Convert.ToString(TempData["EditMessage"])))
+{
+    <h3>@TempData["EditMessage"]</h3>
+    //資料送出後，如果Reload後，文字就消失了
+}
 
 @using (Html.BeginForm())
 {
