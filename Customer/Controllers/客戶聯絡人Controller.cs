@@ -24,6 +24,15 @@ namespace Customer.Controllers
             return View(ContactRepo.All(職稱清單).Include(客 => 客.客戶資料));
         }
 
+        public ActionResult Index(int? 客戶id)
+        {
+            //ViewBag.職稱清單 = ContactRepo.取得職稱清單();          
+            var data = 客戶id.HasValue ? ContactRepo.All().Where(c => c.客戶Id == 客戶id.Value): null;
+
+            return View(data);
+        }
+
+
         // GET: 客戶聯絡人/Details/5
         public ActionResult Details(int? id)
         {
