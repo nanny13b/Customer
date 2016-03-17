@@ -24,6 +24,7 @@ namespace Customer.Controllers
         [HttpPost]
         public ActionResult 依客戶名稱或類別搜尋(string 關鍵字, string 客戶類別)
         {
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
             if (string.IsNullOrEmpty(關鍵字) && string.IsNullOrEmpty(客戶類別))
             {
                 return View("Index", new List<客戶資料>());
@@ -31,7 +32,6 @@ namespace Customer.Controllers
             else
             {
                 var data = CustRepo.All(關鍵字, 客戶類別);
-                //return View("Index", result);
                 //Cindy: 這邊要注意要寫清楚丟到哪個View，例如"Index"，否則會跳出錯誤，導到錯誤的網址，也就是找不到網址
                 return View("Index", data.ToList());
             }

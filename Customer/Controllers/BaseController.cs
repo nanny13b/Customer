@@ -9,8 +9,8 @@ namespace Customer.Controllers
 {
     public class BaseController : Controller
     {
-        public 客戶聯絡人Repository ContactRepo = RepositoryHelper.Get客戶聯絡人Repository();
         public 客戶資料Repository CustRepo = RepositoryHelper.Get客戶資料Repository();
+        public 客戶聯絡人Repository ContactRepo = RepositoryHelper.Get客戶聯絡人Repository();        
         public 客戶銀行資訊Repository BankRepo = RepositoryHelper.Get客戶銀行資訊Repository();
 
         // GET: Base

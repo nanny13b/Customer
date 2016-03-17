@@ -12,7 +12,7 @@
     }
 *@
 
-@using (Html.BeginForm("依客戶名稱或類別搜尋", "客戶資料", FormMethod.Get))
+@using (Html.BeginForm("依客戶名稱或類別搜尋", "客戶資料", FormMethod.Post))
 {
     <table style="border : 0; width:80%;" cellpadding="5">
         <tr>
@@ -61,16 +61,16 @@
             <th></th>
         </tr>
 
-        @{var data = Model.ToArray(); }       
+        @{var data = Model.ToArray(); }
         @for (int i = 0; i < data.Length; i++)
         {
             @Html.HiddenFor(modeltem => data[i].Id)
 
-            if (!string.IsNullOrEmpty(ViewBag.SelectedID) && ViewBag.SelectedID == data[i].Id)
+            if (ViewBag.SelectedID != null && ViewBag.SelectedID == data[i].Id)
             {
                 ViewBag.SelectedItem = data[i];
             }
-            <tr @if (!string.IsNullOrEmpty(ViewBag.SelectedID) && ViewBag.SelectedID == data[i].Id) { @Html.Raw("style='background-color: lightyellow;'")           }>
+            <tr @if (ViewBag.SelectedID != null && ViewBag.SelectedID == data[i].Id) { @Html.Raw("style='background-color: lightyellow;'") }>
                 <td>
                     @Html.DisplayFor(modelItem => data[i].客戶名稱)
                 </td>
@@ -92,7 +92,7 @@
                 <td>
                     @Html.ActionLink("編輯", "Edit", new { id = data[i].Id }) |
                     @Html.ActionLink("明細", "Index", new { type = "Details", id = data[i].Id }) |
-                    @Html.ActionLink("刪除", "Delete", new { id = data[i].Id })
+                    @Html.ActionLink("刪除", "Delete", new { id = data[i].Id }) |
                     @Html.ActionLink("客戶聯絡人", "Index", new { type = "Contact", id = data[i].Id }) |
                 </td>
             </tr>
@@ -104,12 +104,12 @@
 
 @if (ViewBag.SelectedItem != null)
 {
-    if (ViewBag.type == "Detail")
+    if (ViewBag.type == "Details")
     {
         @Html.Partial("Details", ViewData["SelectedItem"])
     }
-    else
+    else if (ViewBag.type == "Contact")
     {
-        @Html.Action("Index", "客戶聯絡人", new { ProductId = ViewBag.SelectedID })
+        @Html.Action("根據客戶代號顯示聯絡人", "客戶聯絡人", new { 客戶id = ViewBag.SelectedID, type = "ByCustID" })
     }
 }

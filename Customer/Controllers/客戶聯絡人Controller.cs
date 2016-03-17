@@ -13,7 +13,7 @@ namespace Customer.Controllers
     public class 客戶聯絡人Controller : BaseController
     {
         //private 客戶資料Entities db = new 客戶資料Entities();
-        
+
 
         // GET: 客戶聯絡人
         public ActionResult Index(string 職稱清單)
@@ -24,12 +24,38 @@ namespace Customer.Controllers
             return View(ContactRepo.All(職稱清單).Include(客 => 客.客戶資料));
         }
 
-        public ActionResult Index(int? 客戶id)
+        [ChildActionOnly]
+        public ActionResult 根據客戶代號顯示聯絡人(int 客戶id, string type)
         {
-            //ViewBag.職稱清單 = ContactRepo.取得職稱清單();          
-            var data = 客戶id.HasValue ? ContactRepo.All().Where(c => c.客戶Id == 客戶id.Value): null;
+            ViewBag.顯示方式 = type;
+            //ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
 
-            return View(data);
+            var data = ContactRepo.All().Where(c => c.客戶Id == 客戶id);
+
+            return View("Index", data);
+        }
+
+        [HttpPost]
+        //客戶聯絡人批次更新ViewModel
+        //Cindy: ModelBinding 沒辦法批次更新
+        public ActionResult Index(List<客戶聯絡人> data)
+        {
+            if (ModelState.IsValid && data != null)
+            {
+                var 客戶Id = data[0].客戶Id;
+                foreach (var item in data)
+                {
+                    var c = ContactRepo.Find(item.Id);
+                    //職稱、手機、電話
+                    c.職稱 = item.職稱;
+                    c.手機 = item.手機;
+                    c.電話 = item.電話;
+                }
+                ContactRepo.UnitOfWork.Commit();
+                return RedirectToAction("根據客戶代號顯示聯絡人", "客戶聯絡人", new { 客戶id = ViewBag.SelectedID, type = "ByCustID" });
+            }
+            ViewBag.顯示方式 = "ByCustID";
+            return View();
         }
 
 
