@@ -15,7 +15,8 @@ namespace Customer.Models
     public partial class VW客戶檢視表
     {
         public string 客戶名稱 { get; set; }
-        public int 帳戶數 { get; set; }
-        public int 聯絡人數量 { get; set; }
+        public Nullable<int> 帳戶數 { get; set; }
+        public Nullable<int> 聯絡人數量 { get; set; }
+        public int Id { get; set; }
     }
 }

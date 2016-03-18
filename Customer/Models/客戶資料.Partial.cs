@@ -41,7 +41,15 @@ namespace Customer.Models
         [Required]
         public string 客戶分類 { get; set; }
 
+        [StringLength(20, ErrorMessage = "欄位長度不得大於 20 個字元")]
+        [Required]
+        public string 帳號 { get; set; }
+
+        [Required]
+        public string 密碼 { get; set; }
+
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual ICollection<客戶聯絡人> 客戶聯絡人 { get; set; }
+        //public virtual  客戶帳號ViewModel 客戶帳號 { get; set; }
     }
 }

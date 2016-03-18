@@ -55,7 +55,7 @@ namespace Customer.Controllers
                 return RedirectToAction("根據客戶代號顯示聯絡人", "客戶聯絡人", new { 客戶id = ViewBag.SelectedID, type = "ByCustID" });
             }
             ViewBag.顯示方式 = "ByCustID";
-            return View();
+            return View(data);
         }
 
 

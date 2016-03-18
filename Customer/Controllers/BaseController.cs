@@ -7,12 +7,22 @@ using System.Web.Mvc;
 
 namespace Customer.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
-        public 客戶資料Repository CustRepo = RepositoryHelper.Get客戶資料Repository();
-        public 客戶聯絡人Repository ContactRepo = RepositoryHelper.Get客戶聯絡人Repository();        
-        public 客戶銀行資訊Repository BankRepo = RepositoryHelper.Get客戶銀行資訊Repository();
+        protected 客戶資料Repository CustRepo = RepositoryHelper.Get客戶資料Repository();
+        protected 客戶聯絡人Repository ContactRepo = RepositoryHelper.Get客戶聯絡人Repository();
+        protected 客戶銀行資訊Repository BankRepo = RepositoryHelper.Get客戶銀行資訊Repository();
 
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.Redirect("/").ExecuteResult(this.ControllerContext);
+            //base.HandleUnknownAction(actionName);
+        }
+
+        public ActionResult Debug()
+        {
+            return Content("DEBUG");
+        }
         // GET: Base
         //public ActionResult Index()
         //{

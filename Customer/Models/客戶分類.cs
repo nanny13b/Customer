@@ -17,7 +17,9 @@ namespace Customer.Models
         [Description("電信業")]
         Telecom = 2,
         [Description("餐飲業")]
-        Restaurant = 3
+        Restaurant = 3,
+        [Description("其他")]
+        Others = 4
     }
     #endregion
 
