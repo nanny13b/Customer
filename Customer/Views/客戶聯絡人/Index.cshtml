@@ -7,19 +7,19 @@
 <h2>客戶聯絡人列表</h2>
 
 
-@using (Html.BeginForm("Index", "客戶聯絡人"))
+@using (Html.BeginForm("依職稱顯示客戶聯絡人", "客戶聯絡人", FormMethod.Post))
 {
     <table style="border : 0; width:80%;" cellpadding="5">
         <tr>
-            <td>@Html.ActionLink("新增聯絡人資料", "Create")</td>
+            <td>@Html.ActionLink("新增聯絡人資料", "Create", FormMethod.Get)</td>
             @if (ViewBag.顯示方式 == null)
             {
                 <td valign="middle" align="center">
-                    客戶職稱：@Html.DropDownList("職稱清單", null, htmlAttributes: new { @class = "form-control" })
+                    客戶職稱：@Html.DropDownList("職稱清單", null, htmlAttributes: new { @class = "form-control", onchange = "this.form.submit();" })
                 </td>
-                <td valign="middle" align="center">
+                @*<td valign="middle" align="center">
                     <button type="submit">搜尋</button>
-                </td>
+                </td>*@
             }
         </tr>
     </table>
@@ -31,10 +31,10 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.職稱)
+                @Html.DisplayNameFor(model => model.姓名)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.姓名)
+                @Html.DisplayNameFor(model => model.職稱)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -45,9 +45,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.電話)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
-            </th>
+            </th>*@
             @if (ViewBag.顯示方式 == null)
             {
                 <th></th>
@@ -59,6 +59,7 @@
         }
         @for (int i = 0; i < data.Length; i++)
         {
+            @Html.HiddenFor(modelItem => data[i].客戶Id)
             @Html.HiddenFor(modelItem => data[i].Id)
             <tr>
                 <td>
@@ -104,9 +105,9 @@
                     }
 
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => data[i].客戶資料.客戶名稱)
-                </td>
+                </td>*@
                 @if (ViewBag.顯示方式 == null)
                 {
                     <td>

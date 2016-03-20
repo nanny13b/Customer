@@ -12,7 +12,7 @@ namespace Customer.Models
     using Customer.Models;
 
     [MetadataType(typeof(客戶聯絡人MetaData))]
-    public partial class 客戶聯絡人 : IValidatableObject
+    public partial class 客戶聯絡人 : IValidatableObject, I客戶聯絡人
     {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

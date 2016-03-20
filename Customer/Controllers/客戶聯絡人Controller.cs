@@ -11,51 +11,73 @@ using Customer.Models;
 namespace Customer.Controllers
 {
     public class 客戶聯絡人Controller : BaseController
-    {
-        //private 客戶資料Entities db = new 客戶資料Entities();
-
-
+    {        
+        //有空來改一下，把關鍵字搜尋 一併放入
+        //可以考慮不要放參數 用ModelBinding的方式來抓
         // GET: 客戶聯絡人
-        public ActionResult Index(string 職稱清單)
+        public ActionResult 依職稱顯示客戶聯絡人(string 職稱清單)
         {
-            //ViewBag.職稱清單 = ContactRepo.取得職稱清單();
             ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
-
-            return View(ContactRepo.All(職稱清單).Include(客 => 客.客戶資料));
+            var data = ContactRepo.All(職稱清單).Include(客 => 客.客戶資料);
+            return View("Index", data);
         }
 
-        [ChildActionOnly]
+        //POST vs Get vs Binding
+        //[ChildActionOnly]
         public ActionResult 根據客戶代號顯示聯絡人(int 客戶id, string type)
         {
             ViewBag.顯示方式 = type;
-            //ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
+            ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
 
             var data = ContactRepo.All().Where(c => c.客戶Id == 客戶id);
 
             return View("Index", data);
         }
 
+        public ActionResult Index()
+        {
+            ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
+            var data = ContactRepo.All().Include(客 => 客.客戶資料);
+            return View(data);            
+        }
+
         [HttpPost]
         //客戶聯絡人批次更新ViewModel
         //Cindy: ModelBinding 沒辦法批次更新
-        public ActionResult Index(List<客戶聯絡人> data)
+        //批次更新最好另外拉出來成為一個Action，呼叫Action轉回View
+        //可能要了解Action跟View之間的關係
+        public ActionResult Index( IList<客戶聯絡人批次更新ViewModel> data)
         {
-            if (ModelState.IsValid && data != null)
+            ViewBag.職稱清單 = new SelectList(ContactRepo.取得職稱清單(), "Key", "Key");
+            var test = ModelState.Values.ToArray();
+            var CustID = 0;
+
+            if (ModelState.IsValid)
             {
-                var 客戶Id = data[0].客戶Id;
-                foreach (var item in data)
-                {
-                    var c = ContactRepo.Find(item.Id);
-                    //職稱、手機、電話
-                    c.職稱 = item.職稱;
-                    c.手機 = item.手機;
-                    c.電話 = item.電話;
+                try
+                {                   
+                    foreach (var item in data)
+                    {
+                        var c = ContactRepo.Find(item.Id);
+                        //職稱、手機、電話
+                        c.職稱 = item.職稱;
+                        c.手機 = item.手機;
+                        c.電話 = item.電話;
+                        CustID = item.客戶Id;
+                    }
+                    ContactRepo.UnitOfWork.Commit();
                 }
-                ContactRepo.UnitOfWork.Commit();
-                return RedirectToAction("根據客戶代號顯示聯絡人", "客戶聯絡人", new { 客戶id = ViewBag.SelectedID, type = "ByCustID" });
+                catch (Exception)
+                {
+                    throw;
+                }
+                return RedirectToAction("根據客戶代號顯示聯絡人", "客戶聯絡人", new { 客戶id = CustID, type = "ByCustID" });
+                //return RedirectToAction("Index");
             }
-            ViewBag.顯示方式 = "ByCustID";
-            return View(data);
+            //ViewBag.顯示方式 = "ByCustID";
+
+            //更新後，為什麼無法保留在原頁面 失去Partial的效果
+            return View("Index", data);
         }
 
 

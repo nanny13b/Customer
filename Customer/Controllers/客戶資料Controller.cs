@@ -12,8 +12,6 @@ namespace Customer.Controllers
 {
     public class 客戶資料Controller : BaseController
     {
-        //private 客戶資料Entities db = new 客戶資料Entities();
-
         // GET: 客戶資料
         //public ActionResult Index()
         //{
@@ -74,6 +72,8 @@ namespace Customer.Controllers
         #endregion
 
         //可顯示單筆資料
+        //有空來改一下，把關鍵字搜尋 一併放入
+        //可以考慮不要放參數 用ModelBinding的方式來抓
         public ActionResult Index(int? id, string type)
         {
             ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");

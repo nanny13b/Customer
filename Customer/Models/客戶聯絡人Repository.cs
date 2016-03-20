@@ -16,10 +16,7 @@ namespace Customer.Models
             var data = this.All();
             if (!string.IsNullOrEmpty(keyword))
             {
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    data = data.Where(c => c.職稱.Contains(keyword));
-                }
+                data = data.Where(c => c.職稱.Contains(keyword));
             }
             return data;
         }
@@ -41,7 +38,8 @@ namespace Customer.Models
             return this.All().FirstOrDefault(c => c.Id == id && c.是否已刪除 == false);
         }
 
-        public IEnumerable<IGrouping<string, 客戶聯絡人>> 取得職稱清單() {
+        public IEnumerable<IGrouping<string, 客戶聯絡人>> 取得職稱清單()
+        {
             //string[] emaillist = (from x in mb select x.email).ToArray() ;
             //IEnumerable<IGrouping<int, string>> query2 = pets.GroupBy(pet => pet.Age, pet => pet.Name);
             IEnumerable<IGrouping<string, 客戶聯絡人>> data = this.All().GroupBy(c => c.職稱).AsEnumerable();

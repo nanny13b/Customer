@@ -18,14 +18,14 @@
         <tr>
             <td>@Html.ActionLink("新增顧客資料", "Create")</td>
             <td align="center" valign="middle">
-                關鍵字：@Html.TextBox("關鍵字", null, new { @class = "form-control" })
+                關鍵字：@Html.TextBox("關鍵字", null, new { @class = "form-control", onchange = "this.form.submit();" })
             </td>
             <td valign="middle" align="center">
-                客戶類別：@Html.DropDownList("客戶類別", null, htmlAttributes: new { @class = "form-control" })
+                客戶類別：@Html.DropDownList("客戶類別", null, htmlAttributes: new { @class = "form-control", onchange = "this.form.submit();" })
             </td>
-            <td valign="middle" align="center">
+            @*<td valign="middle" align="center">
                 <button type="submit">搜尋</button>
-            </td>
+            </td>*@
         </tr>
     </table>
 }
