@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Customer.Models;
+using PagedList;
+using Customer.App_Code;
 
 namespace Customer.Controllers
 {
@@ -74,7 +76,7 @@ namespace Customer.Controllers
         //可顯示單筆資料
         //有空來改一下，把關鍵字搜尋 一併放入
         //可以考慮不要放參數 用ModelBinding的方式來抓
-        public ActionResult Index(int? id, string type)
+        public ActionResult Index(int? id, string type, int pageno = 1)
         {
             ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
             if (id.HasValue)
@@ -82,7 +84,9 @@ namespace Customer.Controllers
                 ViewBag.SelectedID = id;
                 ViewBag.type = type;
             }
-            return View(CustRepo.All());
+            var data = CustRepo.All().OrderBy(c => c.Id).ToPagedList(pageno, 10);
+
+            return View(data);
         }
 
         // GET: 客戶資料/Details/5
@@ -103,6 +107,7 @@ namespace Customer.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
             return View();
         }
 
@@ -130,12 +135,16 @@ namespace Customer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = CustRepo.Find(id);
-            if (客戶資料 == null)
+            客戶資料 cust = CustRepo.Find(id);
+            cust.密碼 = CodeClass.DecryptDES(cust.密碼);
+
+            if (cust == null)
             {
                 return HttpNotFound();
             }
-            return View(客戶資料);
+
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value", cust.客戶分類);
+            return View(cust);
         }
 
 
@@ -145,18 +154,18 @@ namespace Customer.Controllers
         public ActionResult Edit(int id, FormCollection form)
         {
             客戶資料 cust = CustRepo.Find(id);
-
             try
             {
-                if (TryUpdateModel(cust, new string[] { "Id,客戶名稱,統一編號,電話,傳真,地址,Email" }))
-                {
+                if (TryUpdateModel(cust, new string[] { "Id,客戶名稱,統一編號,電話,傳真,地址,Email, 客戶分類,帳號,密碼" }))
+                {                    
+                    cust.密碼 = CodeClass.EncryptDES(cust.密碼);
+
                     CustRepo.UnitOfWork.Commit();
                     TempData["EditMessage"] = "客戶資料更新成功";
-                    var test = cust.Email;
                     RedirectToAction("Index");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -166,6 +175,7 @@ namespace Customer.Controllers
             //    db.SaveChanges();
             //    return RedirectToAction("Index");
             //}
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value", cust.客戶分類);
             return View(cust);
         }
 

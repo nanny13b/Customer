@@ -1,0 +1,9 @@
+﻿@using Customer.Models
+@using System.Collections.Generic;
+
+@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    @客戶分類EnumListHelper.GetDescription((客戶分類)Convert.ToInt32(Model));
+}

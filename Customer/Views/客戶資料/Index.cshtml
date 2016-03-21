@@ -1,7 +1,12 @@
 ﻿@model IEnumerable<Customer.Models.客戶資料>
+@using PagedList
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "客戶資料列表";
+}
+@{
+    var pdata = Model as IPagedList; ;
 }
 
 <h2>客戶資料列表</h2>
@@ -30,6 +35,8 @@
     </table>
 }
 
+@Html.PagedListPager(pdata, p => Url.Action("Index", new { pageno = p }))
+
 @if (!string.IsNullOrEmpty(Convert.ToString(TempData["EditMessage"])))
 {
     //TempData 資料送出後，如果Reload後，文字就消失了
@@ -40,6 +47,9 @@
 {
     <table class="table">
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.客戶分類)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.客戶名稱)
             </th>
@@ -61,7 +71,7 @@
             <th></th>
         </tr>
 
-        @{var data = Model.ToArray(); }
+        @{var data = Model.ToArray();}
         @for (int i = 0; i < data.Length; i++)
         {
             @Html.HiddenFor(modeltem => data[i].Id)
@@ -71,6 +81,9 @@
                 ViewBag.SelectedItem = data[i];
             }
             <tr @if (ViewBag.SelectedID != null && ViewBag.SelectedID == data[i].Id) { @Html.Raw("style='background-color: lightyellow;'") }>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].客戶分類)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => data[i].客戶名稱)
                 </td>

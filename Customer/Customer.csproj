@@ -445,6 +445,8 @@
     <Content Include="Views\客戶檢視表\Index.cshtml" />
     <Content Include="Views\客戶聯絡人\ContactListByCustID.cshtml" />
     <Content Include="Views\Member\Login.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\客戶資料.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\客戶分類.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
