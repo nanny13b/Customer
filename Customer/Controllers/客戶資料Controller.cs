@@ -24,7 +24,7 @@ namespace Customer.Controllers
         [HttpPost]
         public ActionResult 依客戶名稱或類別搜尋(string 關鍵字, string 客戶類別)
         {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
             if (string.IsNullOrEmpty(關鍵字) && string.IsNullOrEmpty(客戶類別))
             {
                 return View("Index", new List<客戶資料>());
@@ -78,7 +78,7 @@ namespace Customer.Controllers
         //可以考慮不要放參數 用ModelBinding的方式來抓
         public ActionResult Index(int? id, string type, int pageno = 1)
         {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
             if (id.HasValue)
             {
                 ViewBag.SelectedID = id;
@@ -107,7 +107,7 @@ namespace Customer.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
             return View();
         }
 
@@ -143,7 +143,7 @@ namespace Customer.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value", cust.客戶分類);
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value", cust.客戶分類);
             return View(cust);
         }
 
@@ -151,14 +151,14 @@ namespace Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
-        public ActionResult Edit(int id, FormCollection form)
+        public ActionResult Edit(int id, 客戶資料 form)
         {
             客戶資料 cust = CustRepo.Find(id);
             try
             {
                 if (TryUpdateModel(cust, new string[] { "Id,客戶名稱,統一編號,電話,傳真,地址,Email, 客戶分類,帳號,密碼" }))
                 {                    
-                    cust.密碼 = CodeClass.EncryptDES(cust.密碼);
+                    cust.密碼 = CodeClass.EncryptDES(form.密碼);
 
                     CustRepo.UnitOfWork.Commit();
                     TempData["EditMessage"] = "客戶資料更新成功";
@@ -175,7 +175,7 @@ namespace Customer.Controllers
             //    db.SaveChanges();
             //    return RedirectToAction("Index");
             //}
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value", cust.客戶分類);
+            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value", cust.客戶分類);
             return View(cust);
         }
 

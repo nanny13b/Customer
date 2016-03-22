@@ -42,7 +42,9 @@ namespace Customer.Models
         [UIHint("客戶分類")]
         public string 客戶分類 { get; set; }
 
-        [StringLength(20, ErrorMessage = "欄位長度不得大於 20 個字元")]
+        //public 客戶分類Enum 客戶分類Val { get; set; }
+
+    [StringLength(20, ErrorMessage = "欄位長度不得大於 20 個字元")]
         [Required]
         public string 帳號 { get; set; }
 

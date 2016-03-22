@@ -31,16 +31,17 @@ namespace Customer.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            //沒有顯示
             ModelState.AddModelError("Password", "您輸入的帳號或密碼錯誤");
 
             return View();
         }
 
         private bool CheckLogin(string username, string password)
-        {
-            string Account = CodeClass.DecryptDES(username);
-            string Password = CodeClass.DecryptDES(password);
-            return CustRepo.All().Any(c => c.帳號 == Account && c.密碼 == Password);
+        {            
+            var m = CustRepo.All().FirstOrDefault(c => c.帳號 == username);
+            string pwd = CodeClass.DecryptDES(m.密碼);
+            return (pwd == password);
         }
 
         public ActionResult Logout()

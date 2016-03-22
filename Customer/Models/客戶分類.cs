@@ -3,22 +3,28 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Customer.Models
 {
     #region 客戶分類   
     [Flags]
-    public enum 客戶分類 : int
+    public enum 客戶分類Enum : int
     {
         [Description("全部")]
+        [Display(Name = "全部")]
         All = 0,
         [Description("程式設計")]
+        [Display(Name = "程式設計")]
         Programming = 1,
         [Description("電信業")]
+        [Display(Name = "電信業")]
         Telecom = 2,
         [Description("餐飲業")]
+        [Display(Name = "餐飲業")]
         Restaurant = 3,
         [Description("其他")]
+        [Display(Name = "其他")]
         Others = 4
     }
     #endregion
@@ -53,7 +59,7 @@ namespace Customer.Models
 
             return dict;
         }
-        public static string GetDescription(客戶分類 value)
+        public static string GetDescription(客戶分類Enum value)
         {
             object[] attrs = value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
             if (attrs.Length == 0)
