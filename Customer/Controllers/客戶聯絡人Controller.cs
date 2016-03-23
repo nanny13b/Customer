@@ -43,7 +43,6 @@ namespace Customer.Controllers
 
         [HttpPost]
         //客戶聯絡人批次更新ViewModel
-        //Cindy: ModelBinding 沒辦法批次更新
         //批次更新最好另外拉出來成為一個Action，呼叫Action轉回View
         //可能要了解Action跟View之間的關係
         public ActionResult Index( IList<客戶聯絡人批次更新ViewModel> data)

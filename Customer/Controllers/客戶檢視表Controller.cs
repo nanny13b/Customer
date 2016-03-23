@@ -7,6 +7,7 @@ using Customer.Models;
 
 namespace Customer.Controllers
 {
+    [Authorize]
     public class 客戶檢視表Controller : Controller
     {
         private 客戶資料Entities db = new 客戶資料Entities();

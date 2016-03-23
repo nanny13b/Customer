@@ -7,6 +7,8 @@ using System.Web.Mvc;
 
 namespace Customer.Controllers
 {
+    [Authorize]
+    [紀錄Action的執行時間Attribute]
     public abstract class BaseController : Controller
     {
         protected 客戶資料Repository CustRepo = RepositoryHelper.Get客戶資料Repository();

@@ -1,9 +1,13 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 
 @{
-    ViewBag.Title = "Error";
+    ViewBag.Title = "錯誤頁";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h1 class="text-danger">錯誤</h1>
+<h2 class="text-danger">在處理要求時發生錯誤.</h2>
 
+<pre>@Model.Exception.Message</pre>
+
+@*@Model.ActionName
+@Model.ControllerName*@

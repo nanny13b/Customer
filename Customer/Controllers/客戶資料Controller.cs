@@ -12,19 +12,15 @@ using Customer.App_Code;
 
 namespace Customer.Controllers
 {
+    [Authorize]
+    [紀錄Action的執行時間]
     public class 客戶資料Controller : BaseController
     {
-        // GET: 客戶資料
-        //public ActionResult Index()
-        //{
-        //    ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類)), "Key", "Value");
-        //    return View(CustRepo.All());
-        //}
 
         [HttpPost]
+        [客戶資料共享的的ViewBag]
         public ActionResult 依客戶名稱或類別搜尋(string 關鍵字, string 客戶類別)
         {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
             if (string.IsNullOrEmpty(關鍵字) && string.IsNullOrEmpty(客戶類別))
             {
                 return View("Index", new List<客戶資料>());
@@ -76,9 +72,9 @@ namespace Customer.Controllers
         //可顯示單筆資料
         //有空來改一下，把關鍵字搜尋 一併放入
         //可以考慮不要放參數 用ModelBinding的方式來抓
+        [客戶資料共享的的ViewBag]
         public ActionResult Index(int? id, string type, int pageno = 1)
         {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
             if (id.HasValue)
             {
                 ViewBag.SelectedID = id;
@@ -105,9 +101,9 @@ namespace Customer.Controllers
         }
 
         // GET: 客戶資料/Create
+        [客戶資料共享的的ViewBag]
         public ActionResult Create()
-        {
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value");
+        {          
             return View();
         }
 
@@ -129,6 +125,7 @@ namespace Customer.Controllers
         }
 
         // GET: 客戶資料/Edit/5
+        [客戶資料共享的的ViewBag]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -142,14 +139,13 @@ namespace Customer.Controllers
             {
                 return HttpNotFound();
             }
-
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value", cust.客戶分類);
             return View(cust);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [客戶資料共享的的ViewBag]
         //public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
         public ActionResult Edit(int id, 客戶資料 form)
         {
@@ -159,6 +155,8 @@ namespace Customer.Controllers
                 if (TryUpdateModel(cust, new string[] { "Id,客戶名稱,統一編號,電話,傳真,地址,Email, 客戶分類,帳號,密碼" }))
                 {                    
                     cust.密碼 = CodeClass.EncryptDES(form.密碼);
+                    //Cindy: 沒有綁定到
+                    cust.客戶分類 = form.客戶分類;
 
                     CustRepo.UnitOfWork.Commit();
                     TempData["EditMessage"] = "客戶資料更新成功";
@@ -175,7 +173,6 @@ namespace Customer.Controllers
             //    db.SaveChanges();
             //    return RedirectToAction("Index");
             //}
-            ViewBag.客戶類別 = new SelectList(客戶分類EnumListHelper.GetEnumDescDictionary(typeof(客戶分類Enum)), "Key", "Value", cust.客戶分類);
             return View(cust);
         }
 
